@@ -74,11 +74,13 @@ function ShiftMonitor() {
     });
   };
 
-  // Record check-in
-  const recordCheckIn = async (status) => {
+ const recordCheckIn = async (status) => {
+  // Convert status to schema enum
+  const logStatus = status === "Active" ? "awake" : "missed";
+
   const newRecord = {
-    time: new Date().toLocaleTimeString(),
-    status,
+    timestamp: new Date(), // matches backend schema
+    status: logStatus,
   };
 
   // Update local state
@@ -93,6 +95,7 @@ function ShiftMonitor() {
     console.error("Failed to update shift log:", error);
   }
 };
+
 
   // End shift button
   const handleEndShift = () => {

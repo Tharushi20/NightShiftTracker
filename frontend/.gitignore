@@ -29,8 +29,6 @@ node_modules/
 package-lock.json
 package.json
 
-# Ignore environment files
-.env
 
 # Ignore logs
 *.log
