@@ -55,21 +55,33 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-// PATCH /api/shifts/:id/log
-router.patch('/:id/log', async (req, res) => {
-  const { log } = req.body; // expects a single log object
+// // PATCH /api/shifts/:id/log
+// router.patch('/:id/log', async (req, res) => {
+//   const { log } = req.body; // expects a single log object
 
+//   try {
+//     const updatedShift = await Shift.findByIdAndUpdate(
+//       req.params.id,
+//       { $push: { logs: log } }, // push log into logs array
+//       { new: true }
+//     );
+//     res.status(200).json(updatedShift);
+//   } catch (err) {
+//     res.status(400).json({ message: err.message });
+//   }
+// });
+
+router.patch('/:id/log', async (req, res) => {
   try {
-    const updatedShift = await Shift.findByIdAndUpdate(
-      req.params.id,
-      { $push: { logs: log } }, // push log into logs array
-      { new: true }
-    );
-    res.status(200).json(updatedShift);
+    const shift = await Shift.findById(req.params.id);
+    shift.logs.push(req.body.log); // push new log object
+    await shift.save();
+    res.json(shift);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 });
+
 
 // ✅ Download Shift Report
 router.get("/:id/report", async (req, res) => {
@@ -109,7 +121,7 @@ router.get("/:id/report", async (req, res) => {
         doc
           .fontSize(12)
           .text(
-            `${index + 1}. ${log.time} — ${log.status}`,
+            `${index + 1}. ${log.timestamp} — ${log.status}`,
             { indent: 20 }
           );
       });

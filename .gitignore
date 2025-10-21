@@ -1,0 +1,16 @@
+# Ignore all node_modules folders
+node_modules/
+
+# Ignore dependency lock files in root (optional)
+package-lock.json
+package.json
+
+# Ignore environment files
+.env
+
+# Ignore logs
+*.log
+
+# Optional: ignore system files
+.DS_Store
+Thumbs.db
