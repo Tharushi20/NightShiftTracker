@@ -1,0 +1,289 @@
+/* Home Hero Section */
+.home-hero {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.home-hero::before {
+  content: "🌟";
+  position: absolute;
+  top: -15px;
+  left: 30px;
+  font-size: 2.5rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.home-hero::after {
+  content: "📊";
+  position: absolute;
+  bottom: 10px;
+  right: 30px;
+  font-size: 2.5rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  opacity: 0.9;
+}
+
+/* Main Title */
+.home-hero h1 {
+  color: white;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.home-hero h1::before {
+  content: "🌙";
+  font-size: 2.2rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* Section Title */
+.home-hero h2 {
+  color: white;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.home-hero h2::before {
+  content: "📋";
+  font-size: 1.8rem;
+}
+
+/* No Reports Message */
+.home-hero > p {
+  color: white;
+  text-align: center;
+  font-size: 1.2rem;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  margin: 1rem 0;
+}
+
+/* Reports Table Container */
+.home-hero ul {
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0;
+  background: white;
+  border-radius: 16px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 500px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom Scrollbar */
+.home-hero ul::-webkit-scrollbar {
+  width: 8px;
+}
+
+.home-hero ul::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 0 16px 16px 0;
+}
+
+.home-hero ul::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 4px;
+}
+
+.home-hero ul::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #5568d3 0%, #6b3d8f 100%);
+}
+
+/* Table Header (First Item Style) */
+.home-hero ul::before {
+  content: "";
+  display: block;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 1rem 1.5rem;
+  color: white;
+  font-weight: 600;
+  font-size: 1.1rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* Table Row */
+.home-hero ul li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 2px solid #f0f0f0;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.home-hero ul li:last-child {
+  border-bottom: none;
+}
+
+.home-hero ul li:hover {
+  background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
+  transform: translateX(5px);
+}
+
+/* Date Text */
+.home-hero ul li span {
+  font-size: 1.1rem !important;
+  font-weight: 600;
+  color: #333;
+  margin-right: 20px !important;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.home-hero ul li span::before {
+  content: "📅";
+  font-size: 1.3rem;
+}
+
+/* Download Button */
+.home-hero ul li button {
+  padding: 0.75rem 1.5rem !important;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 10px !important;
+  cursor: pointer !important;
+  font-weight: 600 !important;
+  font-size: 0.95rem !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4) !important;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.home-hero ul li button::before {
+  content: "⬇️";
+  font-size: 1.1rem;
+}
+
+.home-hero ul li button:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6) !important;
+}
+
+.home-hero ul li button:active {
+  transform: translateY(0) !important;
+}
+
+/* Alternate Row Colors */
+.home-hero ul li:nth-child(even) {
+  background: #fafafa;
+}
+
+.home-hero ul li:nth-child(even):hover {
+  background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .home-hero {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+
+  .home-hero::before {
+    font-size: 2rem;
+    top: -12px;
+    left: 20px;
+  }
+
+  .home-hero::after {
+    font-size: 2rem;
+    bottom: 8px;
+    right: 20px;
+  }
+
+  .home-hero h1 {
+    font-size: 1.5rem;
+    gap: 0.5rem;
+  }
+
+  .home-hero h1::before {
+    font-size: 1.8rem;
+  }
+
+  .home-hero h2 {
+    font-size: 1.3rem;
+    gap: 0.4rem;
+  }
+
+  .home-hero h2::before {
+    font-size: 1.5rem;
+  }
+
+  .home-hero ul {
+    max-height: 400px;
+  }
+
+  .home-hero ul li {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .home-hero ul li span {
+    font-size: 1rem !important;
+    margin-right: 0 !important;
+  }
+
+  .home-hero ul li button {
+    width: 100%;
+    justify-content: center;
+    padding: 0.875rem 1.25rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-hero h1 {
+    font-size: 1.3rem;
+  }
+
+  .home-hero h2 {
+    font-size: 1.1rem;
+  }
+
+  .home-hero ul {
+    max-height: 350px;
+  }
+
+  .home-hero ul li {
+    padding: 0.875rem;
+  }
+
+  .home-hero ul li span {
+    font-size: 0.95rem !important;
+  }
+
+  .home-hero ul li button {
+    font-size: 0.9rem !important;
+  }
+}
