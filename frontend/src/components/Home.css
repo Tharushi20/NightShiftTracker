@@ -80,17 +80,24 @@
   margin: 1rem 0;
 }
 
-/* Reports Table Container */
+/* Reports Table Container - Wrapper for scrolling */
 .home-hero ul {
   list-style: none !important;
   padding: 0 !important;
   margin: 0;
   background: white;
   border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  max-height: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Scrollable content area */
+.home-hero ul {
   overflow-y: auto;
   overflow-x: hidden;
-  max-height: 500px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 /* Custom Scrollbar */
@@ -112,20 +119,6 @@
   background: linear-gradient(135deg, #5568d3 0%, #6b3d8f 100%);
 }
 
-/* Table Header (First Item Style) */
-.home-hero ul::before {
-  content: "";
-  display: block;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 1rem 1.5rem;
-  color: white;
-  font-weight: 600;
-  font-size: 1.1rem;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
 /* Table Row */
 .home-hero ul li {
   display: flex;
@@ -135,6 +128,7 @@
   border-bottom: 2px solid #f0f0f0;
   transition: all 0.3s ease;
   background: white;
+  flex-shrink: 0;
 }
 
 .home-hero ul li:last-child {
@@ -240,7 +234,7 @@
   }
 
   .home-hero ul {
-    max-height: 400px;
+    max-height: 350px;
   }
 
   .home-hero ul li {
@@ -272,7 +266,7 @@
   }
 
   .home-hero ul {
-    max-height: 350px;
+    max-height: 300px;
   }
 
   .home-hero ul li {

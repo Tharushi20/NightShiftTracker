@@ -15,14 +15,6 @@ app.use(cors());
 app.use(express.json());
 
 
-// //nodemailer
-// const transporter = nodemailer.createTransport({
-//   service: 'gmail', 
-//   auth: {
-//     user: 'tharushilad@gmail.com',
-//     pass: 'agah ulww xvrf ixkt' 
-//   }
-// });
 
 //MongoDB Connection
 mongoose.connect(process.env.MONGO_URI, {
@@ -37,58 +29,66 @@ mongoose.connect(process.env.MONGO_URI, {
 //Routes
 app.use('/api/shifts', shiftRoutes);
 
-// // Cron job: runs every minute
-// cron.schedule('* * * * *', async () => {
+async function sendMissedCheckInEmails() {
+    let transporter = nodemailer.createTransport({
+        host: "live.smtp.mailtrap.io",
+        port: 587,
+        secure: false,
+        auth: {
+            user:"api",
+            pass:"48aa7404077d48afeea329a8305b017a",
+        },
+    });
+
+    let info = await transporter.sendMail({
+        from: 'tdomain.com',
+        to: "tharushilad@gmail.com",
+        subject: "Missed Check-in Alert",
+        text: "An employee has missed a check-in during their shift.",
+        html: "<b>An employee has missed a check-in during their shift.</b>",
+    });
+    console.log("⚠️ Auto email sent: %s", info.messageId);
+}
+
+// Cron job — check every 5 minutes
+// cron.schedule('*/5 * * * *', async () => {
 //   try {
 //     const now = new Date();
 //     const today = now.toISOString().split('T')[0];
-
 //     const shifts = await Shift.find({ date: today });
 
 //     for (const shift of shifts) {
+//       // Determine shift hours
 //       let hours = [];
-//       if (shift.shift === '10-2') hours = [10, 11, 12, 1]; // handle next day for 1
-//       if (shift.shift === '2-5') hours = [14, 15, 16, 17]; // convert to 24-hour format
+//       if (shift.shift === '10-2') hours = [10, 11, 12, 13];
+//       if (shift.shift === '2-5') hours = [14, 15, 16, 17];
 
 //       for (const h of hours) {
-//         // Create the exact datetime for this shift hour
-//         let shiftHourDate = new Date(today);
-//         if (h < 10) {
-//           // Handle early hours (after midnight)
-//           shiftHourDate.setDate(shiftHourDate.getDate() + 1);
-//         }
-//         shiftHourDate.setHours(h, 10, 0, 0); // 10 minutes past the hour
+//         const hourStart = new Date(now);
+//         hourStart.setHours(h, 0, 0, 0);
+//         const hourEnd = new Date(hourStart);
+//         hourEnd.setMinutes(59, 59, 999);
 
-//         // Create a unique key for this hour
-//         const hourKey = `${shiftHourDate.getFullYear()}-${shiftHourDate.getMonth() + 1}-${shiftHourDate.getDate()}-${shiftHourDate.getHours()}`;
+//         // Check if log already exists for this hour
+//         const hourLogs = shift.logs.filter(log =>
+//           new Date(log.timestamp) >= hourStart && new Date(log.timestamp) <= hourEnd
+//         );
 
-//         // Check if already logged
-//         const logExists = shift.logs.some(log => log.hourKey === hourKey);
-//         if (!logExists && now >= shiftHourDate) {
-//           // Mark as Inactive
-//           shift.logs.push({ timestamp: new Date(), status: 'Inactive', hourKey });
+//         // If past 10 minutes and no Active log exists, mark inactive
+//         if (now.getHours() === h && now.getMinutes() >= 10 && hourLogs.length === 0) {
+//           console.log(`⏰ ${shift.employeeName} missed check-in for hour ${h}`);
+//           shift.logs.push({ timestamp: now, status: 'Inactive' });
 //           await shift.save();
 
-//           // Send email
-//           const mailOptions = {
-//             from: 'tharushilad@gmail.com',
-//             to: 'tharushilad@icloud.com',
-//             subject: `Missed Check-in Alert for ${shift.employeeName}`,
-//             text: `Employee ${shift.employeeName} missed check-in for shift ${shift.shift} at hour ${h}.`
-//           };
-
-//           transporter.sendMail(mailOptions, (err, info) => {
-//             if (err) console.error('Email error:', err);
-//             else console.log('⚠️ Auto email sent:', info.response);
-//           });
+//           // Send alert email
+//           await sendMissedCheckInEmails(shift.employeeName, shift.shift, h);
 //         }
 //       }
 //     }
 //   } catch (err) {
-//     console.error('Cron error:', err);
+//     console.error("Cron error:", err);
 //   }
 // });
-
 
 
 
