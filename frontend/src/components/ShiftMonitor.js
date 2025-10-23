@@ -30,8 +30,8 @@ function ShiftMonitor() {
   );
   const totalHoursRef = useRef(0);
 
-  const checkInterval = 1 * 60 * 1000; // 1 min for testing
-  const popupDuration = 10 * 1000; // 10 sec for testing
+  const checkInterval = 60 * 60 * 1000; // 1 hour
+  const popupDuration = 10 * 60 * 1000; // 10 minutes
 
   // Update current clock every second
   useEffect(() => {

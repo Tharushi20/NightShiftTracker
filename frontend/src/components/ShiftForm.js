@@ -11,7 +11,7 @@ function ShiftForm() {
     const navigate = useNavigate();
 
     // Example employees for dropdown
-    const employees = ["Alice", "Bob", "Charlie", "David"];
+    const employees = ["Savinda", "Induwara", "Navod", "Dinuk","Divanka","Hansa","Isuka","Savin","Viraj","Madhawa","Esara"];
 
     const handleSubmit = async (e) => {
         e.preventDefault();

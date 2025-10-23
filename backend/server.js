@@ -50,6 +50,8 @@ async function sendMissedCheckInEmails() {
     console.log("⚠️ Auto email sent: %s", info.messageId);
 }
 
+
+
 // Cron job — check every 5 minutes
 // cron.schedule('*/5 * * * *', async () => {
 //   try {
