@@ -52,46 +52,6 @@ async function sendMissedCheckInEmails() {
 
 
 
-// Cron job — check every 5 minutes
-// cron.schedule('*/5 * * * *', async () => {
-//   try {
-//     const now = new Date();
-//     const today = now.toISOString().split('T')[0];
-//     const shifts = await Shift.find({ date: today });
-
-//     for (const shift of shifts) {
-//       // Determine shift hours
-//       let hours = [];
-//       if (shift.shift === '10-2') hours = [10, 11, 12, 13];
-//       if (shift.shift === '2-5') hours = [14, 15, 16, 17];
-
-//       for (const h of hours) {
-//         const hourStart = new Date(now);
-//         hourStart.setHours(h, 0, 0, 0);
-//         const hourEnd = new Date(hourStart);
-//         hourEnd.setMinutes(59, 59, 999);
-
-//         // Check if log already exists for this hour
-//         const hourLogs = shift.logs.filter(log =>
-//           new Date(log.timestamp) >= hourStart && new Date(log.timestamp) <= hourEnd
-//         );
-
-//         // If past 10 minutes and no Active log exists, mark inactive
-//         if (now.getHours() === h && now.getMinutes() >= 10 && hourLogs.length === 0) {
-//           console.log(`⏰ ${shift.employeeName} missed check-in for hour ${h}`);
-//           shift.logs.push({ timestamp: now, status: 'Inactive' });
-//           await shift.save();
-
-//           // Send alert email
-//           await sendMissedCheckInEmails(shift.employeeName, shift.shift, h);
-//         }
-//       }
-//     }
-//   } catch (err) {
-//     console.error("Cron error:", err);
-//   }
-// });
-
 
 
 //start server
