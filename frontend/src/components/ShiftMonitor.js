@@ -4,6 +4,9 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import "./ShiftMonitor.css";
 
+// Import alarm sound
+const ALARM_SOUND_URL = process.env.PUBLIC_URL + '/alarm2.mp3';
+
 function ShiftMonitor() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -29,9 +32,10 @@ function ShiftMonitor() {
     Number(localStorage.getItem("currentHourIndex")) || 0
   );
   const totalHoursRef = useRef(0);
+  const alarmRef = useRef(null); // ✅ Audio reference
 
   const checkInterval = 60 * 60 * 1000; // 1 hour
-  const popupDuration = 10 * 60 * 1000; // 10 minutes
+  const popupDuration = 5 * 60 * 1000; // 10 minutes
 
   // Update current clock every second
   useEffect(() => {
@@ -106,15 +110,80 @@ function ShiftMonitor() {
     if (popupTimerRef.current) clearTimeout(popupTimerRef.current);
     if (currentHourIndexRef.current >= totalHoursRef.current) return;
 
-    const next = new Date(Date.now() + checkInterval);
+    // Get next hour exactly (HH:00)
+    const now = new Date();
+    const next = new Date(now);
+    next.setHours(now.getHours() + 1, 0, 0, 0);
+
+    const delay = next.getTime() - now.getTime();
+
     setNextCheckTime(next);
     localStorage.setItem("nextCheckTime", next.toISOString());
 
-    popupTimerRef.current = setTimeout(() => showPopup(), checkInterval);
+    popupTimerRef.current = setTimeout(() => showPopup(), delay);
   };
 
-  // Show check-in popup
+  // Initialize audio on component mount with user interaction handling
+  useEffect(() => {
+    const audio = new Audio(ALARM_SOUND_URL);
+    audio.loop = true;
+    audio.volume = 0.7;
+    audio.preload = 'auto';
+    alarmRef.current = audio;
+
+    // Function to enable sound after user interaction
+    const enableSound = async () => {
+      try {
+        // Create a short silent audio context
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const audioContext = new AudioContext();
+        await audioContext.resume();
+        
+        // Try to play and immediately pause to enable future playback
+        await audio.play();
+        audio.pause();
+        audio.currentTime = 0;
+        
+        // Remove the event listeners once successful
+        ['click', 'touchstart', 'keydown'].forEach(event => 
+          document.removeEventListener(event, enableSound)
+        );
+      } catch (err) {
+        console.log('Audio context setup pending user interaction');
+      }
+    };
+
+    // Add multiple event listeners for better interaction coverage
+    ['click', 'touchstart', 'keydown'].forEach(event => 
+      document.addEventListener(event, enableSound)
+    );
+
+    return () => {
+      if (alarmRef.current) {
+        alarmRef.current.pause();
+        alarmRef.current = null;
+      }
+      // Clean up event listeners
+      ['click', 'touchstart', 'keydown'].forEach(event => 
+        document.removeEventListener(event, enableSound)
+      );
+    };
+  }, []);
+
+  // ✅ Show check-in popup with alarm
   const showPopup = () => {
+    console.log("🔔 Popup triggered!");
+    if (alarmRef.current) {
+      alarmRef.current.currentTime = 0;
+      alarmRef.current.play().catch((err) => {
+        console.warn("Audio play blocked:", err);
+        // Show a visual indicator that sound is blocked
+        Swal.update({
+          text: "Please interact with the page (click/tap) to enable sound notifications.\nPlease confirm that you're awake and on shift!",
+        });
+      });
+    }
+
     const indexAtPopup = currentHourIndexRef.current;
     if (indexAtPopup >= totalHoursRef.current) return;
 
@@ -140,6 +209,11 @@ function ShiftMonitor() {
         if (!recorded) {
           recorded = true;
           recordCheckIn("Inactive", indexAtPopup);
+        }
+        // ✅ Stop alarm when popup closes
+        if (alarmRef.current) {
+          alarmRef.current.pause();
+          alarmRef.current.currentTime = 0;
         }
       },
     });
